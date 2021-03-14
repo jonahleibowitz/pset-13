@@ -1,16 +1,28 @@
 public class ProblemSet13 {
 
     public static void main(String[] args){
-        int start = 0;
-        int[] numbers = {2, 4, 8};
-        int target = 0;
+        int start = 2;
+        int[] numbers = {2, 4, 7};
+        int target = 9;
 
         System.out.println(groupSum(start, numbers, target));
     }
 
 
     public static boolean groupSum(int start, int[] numbers, int target) {
-    
+
+        //start is the index you start looking at
+        //numbers is the array
+        //target is the target sum
+        if (start >= numbers.length) { //base case: when you reach the end of the array, add 0
+            return (target == 0);
+        }
+        if(numbers[start] == target){
+            return true;
+        }
+
+        return groupSum(start + 1, numbers, target - numbers[start]) ||
+                groupSum(start + 1,numbers,target);
     }
 /*
     public static boolean groupSum6(int start, int[] numbers, int target) {
