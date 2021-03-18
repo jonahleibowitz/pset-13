@@ -1,20 +1,18 @@
+import java.util.Arrays;
 public class ProblemSet13 {
 
     public static void main(String[] args){
-        int start = 2;
-        int[] numbers = {2, 4, 7};
-        int target = 9;
+        int start = 0;
+        int[] numbers = {5, 6, 2};
+        int target = 7;
 
-        System.out.println(groupSum(start, numbers, target));
+        System.out.println(groupSum6(start, numbers, target));
+        //(Arrays.toString
     }
 
 
-    public static boolean groupSum(int start, int[] numbers, int target) {
-
-        //start is the index you start looking at
-        //numbers is the array
-        //target is the target sum
-        if (start >= numbers.length) { //base case: when you reach the end of the array, add 0
+    public boolean groupSum(int start, int[] numbers, int target) {
+        if (start >= numbers.length) {
             return (target == 0);
         }
         if(numbers[start] == target){
@@ -24,28 +22,119 @@ public class ProblemSet13 {
         return groupSum(start + 1, numbers, target - numbers[start]) ||
                 groupSum(start + 1,numbers,target);
     }
-/*
-    public static boolean groupSum6(int start, int[] numbers, int target) {
 
+    public boolean groupSum6(int start, int[] numbers, int target) {
+        int initSixSum = 0;
+        for(int i = start; i < numbers.length; i++){
+            if(numbers[i] == 6){
+                initSixSum+=6;
+                numbers[i] = 0; } }
+
+        if(target - initSixSum <= 0){ return target % 6 == 0; }
+        return groupSum(start, numbers, target - initSixSum);
     }
 
-    public static boolean groupNoAdj(int start, int[] numbers, int target) {
-
+    public boolean groupNoAdj(int start, int[] numbers, int target) {
+        if(start >= numbers.length){
+            return false;
+        }
+        if(numbers[start] == target){
+            return true;
+        }else if(numbers[start] > target){
+            return groupNoAdj(start + 1, numbers, target);
+        }else{
+            boolean result = groupNoAdj(start + 2, numbers, target - numbers[start]);
+            if(!result){
+                return groupNoAdj(start + 1, numbers, target);
+            }
+            return result;
+        }
     }
 
-    public static boolean groupSum5(int start, int[] numbers, int target) {
-
+    public boolean groupSum5(int start, int[] numbers, int target) {
+        if(start == numbers.length){
+            return false;
+        }
+        if(numbers[start] == target){
+            return true;
+        }else if(numbers[start] > target){
+            return groupSum5(start + 1, numbers, target);
+        }else{
+            if(numbers[start] % 5 == 0){
+                boolean result;
+                if(numbers[start + 1] == 1){
+                    result = groupSum5(start + 2, numbers, target - numbers[start]);
+                }else{
+                    result = groupSum5(start + 1, numbers, target - numbers[start]);
+                }
+                return result;
+            }else {
+                boolean result = groupSum5(start + 1, numbers, target - numbers[start]);
+                if(!result){
+                    return groupSum5(start + 1, numbers, target);
+                }
+                return result;
+            }
+        }
     }
 
-    public static boolean groupSumClump(int start, int[] numbers, int target) {
-
+    public boolean groupSumClump(int start, int[] numbers, int target) {
+        if(start == numbers.length){
+            return false;
+        }
+        if(numbers[start] == target){
+            return true;
+        }else if(numbers[start] > target){
+            return groupSumClump(start + 1, numbers, target);
+        }else{
+            boolean result = false;
+            if(start < numbers.length - 1 && numbers[start] == numbers[start + 1]){
+                result = groupSumClump(start + 1, numbers, target - numbers[start]);
+                if(!result){
+                    result = groupSumClump(start + 2, numbers, target);
+                }
+            }else if(start > 0 && numbers[start] == numbers[start - 1]){
+                result = groupSumClump(start + 1, numbers, target - numbers[start]);
+                if(!result){
+                    result = groupSumClump(start + 2, numbers, target + numbers[start]);
+                }
+            }else{
+                result = groupSumClump(start + 1, numbers, target - numbers[start]);
+                if(!result){
+                    return groupSumClump(start + 1, numbers, target);
+                }
+            }
+            return result;
+        }
     }
 
-    public static boolean splitArray(int[] numbers) {
-
+    public boolean splitArray(int[] numbers) {
+        int totalSum = 0;
+        for(int i : numbers){
+            totalSum += i;
+        }
+        if(totalSum%2==1){
+            return false;
+        }else{
+            return groupSum(0 , numbers, totalSum/2);
+        }
     }
 
-    public static boolean splitOdd(int[] numbers) {
 
-    }*/
+    public boolean splitOdd(int[] numbers) {
+        if(numbers.length == 1){ return numbers[0] % 2 == 1;}
+
+        int totalSum = 0;
+        for(int i : numbers) {
+            totalSum += i;}
+        
+        int sumTenMultiples = 0;
+        for(int i = 10; i <= totalSum; i+=10){
+            if(!groupSum(0, numbers, i)){
+                sumTenMultiples = i;
+                break;
+            }
+        }
+        return (totalSum - sumTenMultiples) % 2 == 1;
+    }
 }
