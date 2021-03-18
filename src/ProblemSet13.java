@@ -1,15 +1,4 @@
-import java.util.Arrays;
 public class ProblemSet13 {
-
-    public static void main(String[] args){
-        int start = 0;
-        int[] numbers = {5, 6, 2};
-        int target = 7;
-
-        System.out.println(groupSum6(start, numbers, target));
-        //(Arrays.toString
-    }
-
 
     public boolean groupSum(int start, int[] numbers, int target) {
         if (start >= numbers.length) {
@@ -127,7 +116,7 @@ public class ProblemSet13 {
         int totalSum = 0;
         for(int i : numbers) {
             totalSum += i;}
-        
+
         int sumTenMultiples = 0;
         for(int i = 10; i <= totalSum; i+=10){
             if(!groupSum(0, numbers, i)){
